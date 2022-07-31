@@ -1,71 +1,86 @@
-## Instructions on how to customize this template
+# @flexcodelabs/use-drag-drop-hook
 
-### Step 1: 
-Edit the placeholder name in index.tsx file with your package/component name. You can do this in vscode by using the find and replace feature. Find 'PackageName' and replace it with you component name. Remember to use PascalCase because it is a react component.
+[![npm](https://img.shields.io/npm/v/@flexcodelabs/use-drag-drop-hook)](https://www.npmjs.com/package/@flexcodelabs/use-drag-drop-hook) [![NPM](https://img.shields.io/npm/l/@flexcodelabs/use-drag-drop-hook)](https://www.npmjs.com/package/@flexcodelabs/use-drag-drop-hook)
 
-### Step 2:
+[Package Name](#@flexcodelabs/use-drag-drop-hook)
 
-Edit the placeholder name in package.json file and readme file. You can do this in vscode by using the find and replace feature. Find 'package-name' and replace it with you component name. We recommend using hyphenated names like 'package-name' instead of other formats like camelCase or spaced names like 'packageName' or 'package name'.
-
-### Step 3:
-
-Edit the publish.yml file in the .github/workflows folder to add your email and name. Replace 'bmsteve96@gmail.com' with your email and 'Benedict Steven' with your name.
-
-### Step 4:
-
-Add NPM_AUTH_TOKEN and github TOKEN in the settings of your package repository in the github UI. You can find instrutions on how to generate [NPM_AUTH_TOKEN here](https://docs.npmjs.com/creating-and-viewing-access-tokens) and g[ithub TOKEN here](https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
-
-### Step 5:
-
-Remember to add your component's features and props in this README.md file below the instructions.
-
-### Step 6:
-
-Remove the instructions from this README.md file.
-
-# @flexcodelabs/package-name
-
-[![npm](https://img.shields.io/npm/v/@flexcodelabs/package-name)](https://www.npmjs.com/package/@flexcodelabs/package-name) [![NPM](https://img.shields.io/npm/l/@flexcodelabs/package-name)](https://www.npmjs.com/package/@flexcodelabs/package-name)
-
-[Package Name](#@flexcodelabs/package-name)
-  + [Features](#features)
-  + [Installation](#installation)
-  + [Usage](#usage)
-  + [Examples](#examples)
-  + [Props](#props)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Examples](#examples)
 
 ## Features
 
-* List of features
+- List of features
 
 ## Installation
 
- `npm install @flexcodelabs/package-name`
+`npm install @flexcodelabs/use-drag-drop-hook`
 
 or
 
- `yarn add @flexcodelabs/package-name`
+`yarn add @flexcodelabs/use-drag-drop-hook`
 
 ## Usage
 
 ```js
 ...
-import PackageName from '@flexcodelabs/package-name';
+import useDragAndDrop from '@flexcodelabs/use-drag-drop-hook';
 
-<
-PackageName {
-    ...props
-}
-/>
+// inside React Fn
+const {
+  dragOver, // returns true if drag over event triggered
+  setDragOver, // update drag over state
+  onDragOver, // a function to be called onDrag event
+  onDragLeave, // a function to be called on drag leave
+  fileDropError, // returns error if there is any on file drop
+  setFileDropError, // set errors especially used on validation
+} = useDragAndDrop()
+```
+
+```js
+...
+import useDragAndDrop from '@flexcodelabs/use-drag-drop-hook';
+
+const Test = () => {
+  const {
+    dragOver,
+    onDragOver,
+    onDragLeave,
+    fileDropError,
+    setFileDropError,
+  } = useDragAndDrop();
+  const [file, setFile] = useState<any>(null);
+  const onDrop = (e: any) => {
+    e.preventDefault();
+    if (e.dataTransfer.files[0]?.size > 10000) {
+      setFileDropError("Invalid file size");
+    }
+    // do something with the file
+    setFile(e.dataTransfer.files[0]);
+  };
+
+  return (
+    <div>
+      <label
+        onDrag={onDragOver}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onDrop={onDrop}
+      >
+        {file && <p>{file?.name}</p>}
+        Drag and Drop your files here
+        <input type="file" />
+        {fileDropError && <p>{fileDropError}</p>}
+        <p>{dragOver && "Drop your files here"}</p>
+        <p>Max file size = 10Kb</p>
+      </label>
+    </div>
+  );
+};
+
 ```
 
 ## Examples
 
-[Source code](${repo})  
-[Demo](${demo_link})
-
-## Props
-
-| Name | Type   | Default | Required | Description  |
-| ---- | ------ | ------- | -------- | ------------ |
-| Prop | `type` | ``      | false    | Descriptions |
+[Source code](https://github.com/flexcodelabs/hooks-use-drag-drop-hook/example)

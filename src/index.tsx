@@ -1,11 +1,22 @@
-import React, { FC, ReactNode } from "react";
+import { useState, SyntheticEvent } from "react";
 
-interface PackageNameProps {
-  children: ReactNode;
+export default function useDragAndDrop() {
+  const [dragOver, setDragOver] = useState(false);
+  const [fileDropError, setFileDropError] = useState("");
+
+  const onDragOver = (e: SyntheticEvent) => {
+    e.preventDefault();
+    setDragOver(true);
+  };
+
+  const onDragLeave = () => setDragOver(false);
+
+  return {
+    dragOver,
+    setDragOver,
+    onDragOver,
+    onDragLeave,
+    fileDropError,
+    setFileDropError,
+  };
 }
-
-const PackageName: FC<PackageNameProps> = ({ children }) => {
-  return <div>{children}</div>;
-};
-
-export default PackageName;
